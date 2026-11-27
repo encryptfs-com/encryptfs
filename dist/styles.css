@@ -153,3 +153,34 @@
   color: #c4cad6;
 }
 .header-github:hover { background: var(--hover); color: var(--text); }
+
+#import-drive[aria-busy="true"] img { display: none; }
+#import-drive[aria-busy="true"]::after {
+  content: "";
+  width: 18px;
+  height: 18px;
+  border: 2px solid #50617e;
+  border-top-color: #adc7ff;
+  border-radius: 50%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  #import-drive[aria-busy="true"]::after { animation: drive-loading 750ms linear infinite; }
+}
+@keyframes drive-loading { to { transform: rotate(360deg); } }
+
+.site-information {
+  margin: 0 auto 18px;
+  text-align: center;
+}
+.site-information nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 18px;
+}
+.site-information a {
+  color: var(--muted);
+  font-size: 13px;
+  text-underline-offset: 3px;
+}
+.site-information .deployment-stamp { margin: 7px 0 0; }

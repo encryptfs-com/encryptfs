@@ -96,6 +96,19 @@ test('downloads stream into File objects, preserve .efs bytes, and use only the 
   assert.equal(requests[0].options.headers['X-Goog-Drive-Resource-Keys'], 'file_1/resource_key');
   assert.equal(requests[0].options.credentials, 'omit'); assert.equal(progress.at(-1).done, data.length);
 });
+test('default fetch keeps the browser receiver for metadata and media requests', async t => {
+  t.mock.method(globalThis, 'fetch', async function (url) {
+    assert.equal(this, globalThis);
+    return url.includes('alt=media') ? new Response('ok') : metadata(2);
+  });
+  const mock = mockGoogle();
+  const source = new GoogleDriveImportSource(config, { scope: mock.scope });
+  const selected = await connect(source, mock);
+  const [result] = await collect(source.read(selected, { remainingBytes: () => 10 }));
+  assert.equal(result.error, undefined);
+  assert.equal(await result.file.text(), 'ok');
+  assert.equal(globalThis.fetch.mock.callCount(), 2);
+});
 test('oversized and incomplete files fail while later files still import', async () => {
   const mock = mockGoogle();
   const source = new GoogleDriveImportSource(config, { scope: mock.scope, fetch: async url => {

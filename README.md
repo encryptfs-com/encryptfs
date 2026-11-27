@@ -65,7 +65,7 @@ also start this server:
    are independently selectable. Successful entries move from the upper list to the
    lower results list; completed containers leave the workspace. Failed or cancelled
    entries stay above. Results remain separate from Encrypt inputs.
-5. Select a decrypted result to view it in the lower viewer. For a supported video, select **Play**. The first new result previews automatically.
+5. Select a decrypted result to view it in the lower viewer. The first new result previews automatically.
    PDFs render locally to canvas with page controls. Encrypt inputs use a preview dialog.
    Search decrypted filenames and folder paths without leaving the expanded tree. Video
    support depends on browser codecs.

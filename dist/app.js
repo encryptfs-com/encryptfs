@@ -44,6 +44,7 @@ async function encryptedDirectory() {
   checkCancelled(); return session?.directory;
 }
 const clearTooltip = attachDelayedTooltip($('clear-button'), $('clear-workspace-tooltip'));
+attachDelayedTooltip($('import-drive'), $('drive-import-tooltip'), { delay: 150 });
 let worker; let sequence = 0; const pending = new Map();
 const iconPaths = {
   eye: '<path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>',
@@ -291,7 +292,7 @@ function renderPlain(area = 'plain') {
     return selectableRow({ key: file.id, name, size: file.blob.size,
       badge: file.origin === 'decrypted' ? 'Decrypted' : zip ? 'ZIP archive' : 'Imported',
       decrypted: file.origin === 'decrypted', area, type: file.type, duration: file.duration,
-      preview: zip ? undefined : () => previewFile(file), play: area === 'results' && Boolean(videoType(file)), extract: zip ? () => extractArchive(file, area) : undefined,
+      preview: zip ? undefined : () => previewFile(file), extract: zip ? () => extractArchive(file, area) : undefined,
       download: () => downloads.write({ blob: file.blob, name }), remove: () => removePlain(file.id) });
   };
   const groups = new Map();
@@ -463,8 +464,10 @@ function updateControls() {
   for (const [id, source, name] of [['import-dropbox', dropbox, 'Dropbox'], ['import-onedrive', onedrive, 'OneDrive']]) {
     const label = !source.configured ? `${name} — not configured (development)` : source.ready ? `Import from ${name}` : `Connect to ${name}`; $(id).title = label; $(id).setAttribute('aria-label', label);
   }
-  const driveLabel = !drive.configured ? 'Google Drive — not configured (development)' : !drive.ready || !drive.connected ? 'Connect to Google Drive' : 'Import from Google Drive';
-  $('import-drive').setAttribute('aria-label', driveLabel); $('import-drive').title = driveLabel;
+  const driveLabel = drive.configured ? 'Import files from Google Drive' : 'Google Drive — not configured (development)';
+  $('drive-tooltip-control').hidden = $('import-drive').hidden;
+  $('import-drive').setAttribute('aria-label', driveLabel);
+  $('drive-import-tooltip').textContent = driveLabel;
   $('disconnect-drive').hidden = !drive.connected;
   $('drop-zone').setAttribute('aria-disabled', String(busy));
   $('drop-zone').disabled = busy;
@@ -564,22 +567,31 @@ async function addFiles(files, { announce = true, navigate = true } = {}) {
     return { count, toEncrypt, toDecrypt, failures, destinations };
 }
 
-async function importProvider(source, name, iconName) {
+async function importProvider(source, name, iconName, prepareButton) {
   if (state.busy) return;
   if (!source.configured) { message(`${name} is not configured for this installation yet.`, true); return; }
   providerController = new AbortController();
   const signal = providerController.signal;
-  if (!source.ready) {
+  if (!source.ready && !prepareButton) {
     await operation(`Preparing ${name}`, async () => {
       await source.prepare({ signal });
       message(`${name} is ready. Click the ${iconName} icon again to choose files.`);
     });
     providerController = null; return;
   }
-  // Open authorization/chooser synchronously in this click, before any await.
-  const selection = source.pick({ signal, sizeLimit: MAX_BYTES });
+  const ready = source.ready;
+  // A warm picker can open from the original click without waiting for scripts.
+  const selection = ready ? source.pick({ signal, sizeLimit: MAX_BYTES }) : null;
   await operation(`Importing from ${name}`, async () => {
-    const files = await selection; checkCancelled();
+    if (!ready) {
+      prepareButton.setAttribute('aria-busy', 'true');
+      progress(`Importing from ${name}`, { phase: 'Loading Google Drive', total: 0 });
+      try { await source.prepare({ signal }); }
+      finally { prepareButton.removeAttribute('aria-busy'); }
+      checkCancelled();
+      progress(`Importing from ${name}`, { phase: 'Choose files in Google Drive', total: 0 });
+    }
+    const files = await (selection ?? source.pick({ signal, sizeLimit: MAX_BYTES })); checkCancelled();
     if (!files.length) { message(`No ${name} files selected.`); return; }
     const failures = []; const destinations = new Set(); const initialTab = state.activeTab; let count = 0, toEncrypt = 0, toDecrypt = 0;
     for await (const result of source.read(files, { signal, remainingBytes: () => MAX_BYTES,
@@ -597,7 +609,7 @@ async function importProvider(source, name, iconName) {
   providerController = null;
 }
 
-const importDrive = () => importProvider(drive, 'Google Drive', 'Drive');
+const importDrive = () => importProvider(drive, 'Google Drive', 'Drive', $('import-drive'));
 const importDropbox = () => importProvider(dropbox, 'Dropbox', 'Dropbox');
 
 async function encryptSelected(event) {

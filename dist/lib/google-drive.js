@@ -26,7 +26,7 @@ function loadScript(document, src, signal) {
 // and keys are never passed to it. Tokens are private fields and never persisted.
 export class GoogleDriveImportSource {
   #config; #scope; #document; #fetch; #now; #token = null; #expires = 0; #cancelPicker;
-  constructor(config, { scope = globalThis.window, document = globalThis.document, fetch = globalThis.fetch, now = Date.now } = {}) {
+  constructor(config, { scope = globalThis.window, document = globalThis.document, fetch = globalThis.fetch.bind(globalThis), now = Date.now } = {}) {
     this.#config = config; this.#scope = scope; this.#document = document; this.#fetch = fetch; this.#now = now;
   }
   get configured() { return isDriveConfigured(this.#config); }
@@ -52,8 +52,8 @@ export class GoogleDriveImportSource {
     if (!this.ready) throw new Error('Google Drive did not initialize. Please try again.');
   }
 
-  // Call directly from a click handler. Do not await script loading before calling:
-  // authorization popups require a fresh user gesture in compatible browsers.
+  // A warm picker should be called directly from the click handler so a
+  // blocked first authorization can be retried with fresh user activation.
   pick({ signal } = {}) {
     check(signal);
     if (!this.configured || !this.ready) return Promise.reject(new Error('Prepare Google Drive before connecting.'));
@@ -98,7 +98,7 @@ export class GoogleDriveImportSource {
             if (!Number.isFinite(seconds) || seconds <= 0) { finish(new Error('Google Drive returned an invalid authorization lifetime.')); return; }
             this.#token = response.access_token; this.#expires = this.#now() + Math.max(0, seconds - 30) * 1000; show();
           },
-          error_callback: error => finish(new Error(error.type === 'popup_closed' ? 'Google authorization was closed. No files were imported.' : 'Google authorization could not open. Allow popups for this site and try again.'))
+          error_callback: error => finish(new Error(error.type === 'popup_closed' ? 'Google authorization was closed. No files were imported.' : 'Google sign-in could not open. Click the Drive icon again. Allow popups for this site if the browser still blocks it.'))
         });
         client.requestAccessToken({ prompt: 'select_account' });
       } catch { finish(new Error('Google authorization could not start. Please try again.')); }

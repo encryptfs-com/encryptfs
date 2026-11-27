@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="How encryptfs handles files, passwords, and data from optional cloud imports.">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#18191c">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Privacy policy — encryptfs</title>
+  <link rel="canonical" href="https://encryptfs.com/privacy/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/efs/guide.css">
+  <link rel="stylesheet" href="/guides/guides.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="brand" aria-label="encryptfs home"><img class="brand-mark" src="/favicon.svg" width="30" height="30" alt="">encrypt<span class="brand-fs">fs</span></a>
+    <nav class="reading-nav" aria-label="Main navigation"><a href="/" class="secondary-button">Open encryptfs</a></nav>
+  </header>
+  <main class="efs-main guides-main">
+    <article class="guide-post">
+      <header class="guide-intro">
+        <h1>Privacy policy</h1>
+        <p>This policy describes how encryptfs handles data when you use the app on encryptfs.com.</p>
+      </header>
+      <div class="post-body">
+        <h2>Files and passwords</h2>
+        <p>Encryptfs encrypts, decrypts, and previews your files in your browser. The app does not send your files, passwords, or encryption keys to an encryptfs server. You can use local files without an account.</p>
+
+        <h2>Google Drive import</h2>
+        <p>When you select Google Drive, the browser loads Google’s sign-in and file picker. Google handles your sign-in. Encryptfs requests the <code>drive.file</code> permission. This gives the app access to specific files you open or share with it.</p>
+        <p>After you select files, encryptfs reads their contents and the details it needs to import them. These details include the file name, type, size, and modification time. Your browser downloads the files directly from Google. Encryptfs uses read requests for this feature.</p>
+        <p>Encryptfs uses this data to add the files to your workspace so you can encrypt, decrypt, or view them. We do not sell or transfer Google user data to advertisers or other third parties. We do not use it for advertising or to train AI models. The app does not send it to encryptfs staff for review.</p>
+        <p>Encryptfs’s use and transfer of information received from Google APIs adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+
+        <h2>Storage and deletion</h2>
+        <p>The app keeps the Google access token in memory for the current tab. It does not save the token in browser storage. Imported files and their details stay in the browser workspace. The app can use temporary browser storage for encrypted output.</p>
+        <p>Use <strong>Clear workspace</strong> to release files, keys, and tokens held by the app. Closing or reloading the tab ends the workspace session. The app can remove temporary encrypted output left behind when you return. Files you save to a folder or download remain on your device until you remove them.</p>
+        <p><strong>Disconnect Drive</strong> clears the token in the app. To remove the permission you gave Google, open your <a href="https://myaccount.google.com/connections">Google Account connections</a> and remove encryptfs. These actions do not delete your original files in Drive.</p>
+
+        <h2>Other providers and website hosting</h2>
+        <p>If Dropbox or OneDrive is available and you choose it, that provider handles authentication and file selection. Your browser downloads selected files from the provider. The provider applies its own privacy policy.</p>
+        <p>Cloudflare delivers the website and may process request data such as IP addresses, browser details, and page visits for delivery, security, and site analytics. These website requests do not include your workspace files or encryption passwords. <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare privacy policy</a>.</p>
+
+        <h2>Contact</h2>
+        <p>For privacy questions, email <a href="mailto:encryptfs@gmail.com">encryptfs@gmail.com</a>. We use your message and email address to respond.</p>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

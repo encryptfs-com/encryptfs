@@ -21,7 +21,7 @@ configuration. No backend, service account, or client secret is used.
    instructions also require `https://docs.google.com/*` because Picker runs in
    a Google-hosted iframe.
 6. Copy the project's numeric **project number** from its project settings.
-7. Fill in `dist/drive-config.js`:
+7. Create `drive-config.local.js` in the repository root:
 
 ```js
 export const GOOGLE_DRIVE_CONFIG = Object.freeze({
@@ -31,19 +31,32 @@ export const GOOGLE_DRIVE_CONFIG = Object.freeze({
 });
 ```
 
-These values are public browser configuration. **Do not add a client secret,
-service-account key, access token, or refresh token to this file.** For a public
-release, complete Google's applicable consent/verification and publishing steps.
+These values are public browser configuration. Git ignores this local file.
+Keep the tracked `dist/drive-config.js` blank. **Do not add a client secret,
+service-account key, access token, or refresh token.**
+
+## Stage a production deployment
+
+Add the production origin to the OAuth client. Add the production website
+pattern to the API key. Then run:
+
+```sh
+node scripts/stage-pages.mjs --with-google-drive
+```
+
+The command prints a temporary directory to deploy to Cloudflare Pages. It
+copies only the three public Drive settings into that build. Visitors can read
+them in the browser. For a public release, complete Google's applicable
+consent and publishing steps. In Testing, only your test users can sign in.
 
 See Google's [Picker integration guide](https://developers.google.com/workspace/drive/picker/guides/web-picker)
 and [browser token-model guide](https://developers.google.com/identity/oauth2/web/guides/use-token-model).
 
 ## Use
 
-Refresh the app. Click the **Google Drive icon** to load the optional Google libraries, then
-click the icon again to authorize and choose files. The second click
-ensures the authorization popup starts directly inside a user gesture rather than
-after asynchronous script loading. Later imports reuse an unexpired in-memory token.
+Start the local server with `npm start`. Refresh the app. Click the **Google Drive icon** to load the picker and start
+Google sign-in. If the browser blocks sign-in while the picker loads, click
+the icon again. Later imports reuse an unexpired in-memory token.
 
 Select multiple ordinary files or `.efs` containers. Selected files download directly
 from Google into browser memory and enter the existing header-inspection pipeline.
