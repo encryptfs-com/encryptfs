@@ -1,0 +1,9 @@
+title: encryptfs documentation
+description: Why encryptfs exists and how the .efs file format works.
+theme: jekyll-theme-primer
+exclude:
+  - dropbox.md
+  - format-v1.md
+  - google-drive.md
+  - onedrive.md
+  - requirements.md

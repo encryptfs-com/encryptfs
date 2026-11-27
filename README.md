@@ -1,8 +1,20 @@
 # encryptfs
 
-A client-side browser workspace for encrypting, selectively decrypting, and
-previewing files. No application server, encryptfs accounts, analytics, or automatic file uploads.
-Optional Google Drive and Dropbox importers download selected files directly into the browser. File data and unlocked keys live only in the current tab.
+[![CI](https://github.com/encryptfs-com/encryptfs/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/encryptfs-com/encryptfs/actions/workflows/ci.yml)
+
+Encrypt, decrypt, and view files in your browser, all on-device.
+
+[Open encryptfs](https://encryptfs.com/) · [Project documentation](https://encryptfs-com.github.io/encryptfs/) · [.efs format specification](docs/format-v1.md)
+
+## Why this exists
+
+Cloud storage providers usually encrypt files at rest. Their authorized systems can still read files to provide features such as search or AI assistance.
+
+Data can also reach people through authorized access or a security incident. Dropbox describes limited staff access to file contents. Google says human reviewers can see some data from apps connected to consumer Gemini. In 2023, an attacker used a Microsoft signing key to access Exchange Online mailboxes. [Dropbox staff access](https://help.dropbox.com/security/file-access) · [Google’s Connected Apps guidance](https://support.google.com/gemini/answer/16836988?hl=en-45) · [Exchange Online incident report](https://www.cisa.gov/sites/default/files/2024-04/CSRB_Review_of_the_Summer_2023_MEO_Intrusion_Final_508c.pdf)
+
+encryptfs makes a password-protected `.efs` vault before you upload your files. The cloud service gets the encrypted vault. Keep the password separate.
+
+File processing runs in your browser. A vault protects the copy inside it. Other readable copies remain accessible. There is no password recovery.
 
 ## Run
 
@@ -46,15 +58,14 @@ also start this server:
    the Decrypt tab regardless of their extension. Ordinary files appear in Encrypt.
 2. Select plaintext files, enter and confirm a password, and encrypt separately or
    as one folder. Successful inputs leave the workspace; originals on disk remain.
-3. Rename the generated UUID `.efs` names and export the output group. Exported
-   outputs leave the workspace after the browser download is requested.
+3. Select **Save .efs file** to download the encrypted copy. You can change its generated name first.
+   The output leaves the workspace when the browser requests the download.
 4. Import encrypted containers and enter a password. Matching names appear first;
    select only the entries you want to decrypt in the upper list. Folder contents
    are independently selectable. Successful entries move from the upper list to the
    lower results list; completed containers leave the workspace. Failed or cancelled
    entries stay above. Results remain separate from Encrypt inputs.
-5. Select a decrypted result or use its eye button for inline text, PDF, image, or
-   video previews in the lower viewer. The first new result previews automatically.
+5. Select a decrypted result to view it in the lower viewer. For a supported video, select **Play**. The first new result previews automatically.
    PDFs render locally to canvas with page controls. Encrypt inputs use a preview dialog.
    Search decrypted filenames and folder paths without leaving the expanded tree. Video
    support depends on browser codecs.
