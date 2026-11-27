@@ -142,3 +142,14 @@
   font-size: 13px;
   text-underline-offset: 3px;
 }
+
+.header-github {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #c4cad6;
+}
+.header-github:hover { background: var(--hover); color: var(--text); }

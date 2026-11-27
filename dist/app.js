@@ -468,10 +468,14 @@ function updateControls() {
   $('disconnect-drive').hidden = !drive.connected;
   $('drop-zone').setAttribute('aria-disabled', String(busy));
   $('drop-zone').disabled = busy;
-  $('encrypt-tab-count').textContent = filesFor('plain').length;
-  $('decrypt-tab-count').textContent = state.encrypted.length + resultTotal;
+  const inputTotal = filesFor('plain').length;
+  const decryptTotal = state.encrypted.length + resultTotal;
+  $('encrypt-tab-count').textContent = inputTotal;
+  $('encrypt-tab-count').hidden = inputTotal === 0;
+  $('decrypt-tab-count').textContent = decryptTotal;
+  $('decrypt-tab-count').hidden = decryptTotal === 0;
   $('decrypt-tab-count').title = `${state.encrypted.length} encrypted containers · ${resultTotal} decrypted files`;
-  $('encrypt-tab-count').title = `${filesFor('plain').length} input files · ${$('export-count').textContent} encrypted outputs`;
+  $('encrypt-tab-count').title = `${inputTotal} input files · ${$('export-count').textContent} encrypted outputs`;
   for (const button of document.querySelectorAll('#receipts-list button')) button.disabled = busy;
   setActiveTab(state.activeTab);
   for (const button of document.querySelectorAll('.row-actions button')) button.disabled = busy;
