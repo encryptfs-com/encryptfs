@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320" fill="none">
+  <title>Who controls the key?</title>
+  <rect width="560" height="320" rx="20" fill="#20252f"/>
+  <rect x="20" y="20" width="520" height="132" rx="14" fill="#292d38" stroke="#414959"/>
+  <rect x="20" y="168" width="520" height="132" rx="14" fill="#273345" stroke="#455975"/>
+  <g fill="#e4ecfc" font-family="system-ui, sans-serif" font-size="20" font-weight="650">
+    <text x="38" y="51">Provider-managed encryption</text>
+    <text x="38" y="200">Client-side encryption with encryptfs</text>
+  </g>
+  <g fill="#242a36" stroke="#4f607b">
+    <rect x="38" y="68" width="220" height="63" rx="8"/><rect x="302" y="68" width="220" height="63" rx="8"/>
+    <rect x="38" y="216" width="220" height="63" rx="8"/><rect x="302" y="216" width="220" height="63" rx="8"/>
+  </g>
+  <g stroke="#9bbaff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M265 100h29m-7-6 7 6-7 6m-22 142h29m-7-6 7 6-7 6"/>
+  </g>
+  <g fill="#e4ecfc" font-family="system-ui, sans-serif" font-size="18" font-weight="600" text-anchor="middle">
+    <text x="148" y="94">Provider's key service</text><text x="412" y="94">Provider storage</text>
+    <text x="148" y="243">Your browser</text><text x="412" y="243">Provider storage</text>
+  </g>
+  <g fill="#c3d0e9" font-family="system-ui, sans-serif" font-size="16" text-anchor="middle">
+    <text x="148" y="117">Uses the storage key</text><text x="412" y="117">Holds encrypted files</text>
+    <text x="148" y="266">Makes the vault key</text><text x="412" y="266">Receives the .efs vault</text>
+  </g>
+</svg>

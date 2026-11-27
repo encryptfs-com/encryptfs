@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 222" fill="none">
+  <title>How connected app data can reach human review</title>
+  <rect width="560" height="222" rx="20" fill="#20252f"/>
+  <g fill="#273345" stroke="#455975">
+    <rect x="20" y="56" width="146" height="116" rx="14"/>
+    <rect x="207" y="56" width="146" height="116" rx="14"/>
+    <rect x="394" y="56" width="146" height="116" rx="14"/>
+  </g>
+  <g stroke="#9bbaff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 115h23m-7-6 7 6-7 6m171-6h23m-7-6 7 6-7 6" />
+    <path d="M78 96h30v18H78zM78 96l15 10 15-10"/>
+    <path d="M280 88c0 10-5 15-15 15 10 0 15 5 15 15 0-10 5-15 15-15-10 0-15-5-15-15Z"/>
+    <path d="M450 103c10-13 24-13 34 0-10 13-24 13-34 0Z"/>
+    <circle cx="467" cy="103" r="4" fill="#9bbaff"/>
+  </g>
+  <g fill="#e4ecfc" font-family="system-ui, sans-serif" font-size="17" font-weight="650" text-anchor="middle">
+    <text x="93" y="147">Gmail or Drive</text>
+    <text x="280" y="147">Consumer Gemini</text>
+    <text x="467" y="147">Human review</text>
+  </g>
+  <g fill="#c3d0e9" font-family="system-ui, sans-serif" font-size="15" text-anchor="middle">
+    <text x="180" y="37">Connected app access</text>
+    <text x="454" y="37">Some processed data</text>
+    <text x="280" y="201">Google can select relevant emails, files, or excerpts for review.</text>
+  </g>
+</svg>

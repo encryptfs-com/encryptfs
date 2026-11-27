@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="See who controls the keys and how to encrypt files before you upload them."><meta name="color-scheme" content="dark"><meta name="theme-color" content="#18191c"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>What cloud storage encryption at rest protects — encryptfs</title><meta property="og:title" content="What cloud storage encryption at rest protects"><meta property="og:description" content="See who controls the keys and how to encrypt files before you upload them."><meta property="og:type" content="article"><meta property="article:published_time" content="2026-09-18T00:00:00Z"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/efs/guide.css"><link rel="stylesheet" href="/guides/guides.css"><link rel="describedby" href="/llms.txt" type="text/plain"><link rel="alternate" href="/guides/cloud-storage-encryption-at-rest/index.md" type="text/markdown"></head>
+<body><header class="site-header"><a href="/" class="brand" aria-label="encryptfs home"><img class="brand-mark" src="/favicon.svg" width="30" height="30" alt="">encrypt<span class="brand-fs">fs</span></a><nav class="reading-nav" aria-label="Main navigation"><a href="/guides/">Guides</a><a href="/efs/">File format</a><a href="/" class="secondary-button">Open encryptfs</a></nav></header><main class="efs-main guides-main"><article class="guide-post"><a href="/guides/" class="back-link">← All guides</a><header class="guide-intro"><span class="guide-version">FILE PRIVACY GUIDE</span><h1>What cloud storage encryption at rest protects</h1><time datetime="2026-09-18">September 18, 2026</time></header><div class="post-body"><p>Encryption at rest protects data while a system stores it. Google Drive and Dropbox encrypt files on their storage systems. <a href="https://support.google.com/drive/answer/10519333?hl=en-AU" rel="noreferrer">Google Drive documentation</a>. <a href="https://help.dropbox.com/security/physical-location-data-storage" rel="noreferrer">Dropbox storage documentation</a>.</p>
+<h2 id="who-can-use-the-keys">Who can use the keys?</h2>
+<p>An encryption key is a value that a system uses to encrypt or decrypt data. With provider-managed encryption, the provider controls the keys or the service that uses them.</p>
+<p>A stolen copy of storage can still be encrypted. An attacker does not automatically get the keys with that copy.</p>
+<p>If an attacker gains access to an authorized account or service, that account or service can give the attacker readable data. The attacker can get this access without a copy of the encryption keys.</p>
+<p>Google Drive offers a separate client-side encryption feature for eligible work or school accounts. Dropbox also offers end-to-end encryption for eligible team folders. <a href="https://support.google.com/drive/answer/10519333?hl=en-AU" rel="noreferrer">Google Drive client-side encryption</a>. <a href="https://help.dropbox.com/security/encrypted-team-folders" rel="noreferrer">Dropbox encrypted team folders</a>.</p>
+<figure class="guide-diagram"><img src="/guides/diagrams/cloud-encryption.svg" alt="With provider-managed encryption, the provider can decrypt stored data. With an .efs vault, your browser makes the key from your password and the provider receives the vault."></figure>
+<h2 id="what-providers-and-investigators-reported">What providers and investigators reported</h2>
+<ul>
+<li><strong>Dropbox personnel access.</strong> Dropbox says a small number of personnel can access standard file contents in limited cases. These cases include legal requirements, technical work, and policy enforcement. <a href="https://help.dropbox.com/security/file-access" rel="noreferrer">Dropbox file access policy</a>.</li>
+<li><strong>Dropbox sign-in error, 2011.</strong> Dropbox reported a software error that let some people sign in without the correct account password. The report does not describe loss of storage keys. <a href="https://blog.dropbox.com/topics/company/yesterdays-authentication-bug" rel="noreferrer">Dropbox incident report</a>.</li>
+<li><strong>Microsoft Hotmail access, 2012.</strong> Microsoft said its investigators read a user&#39;s Hotmail content during an investigation. In 2014, Microsoft announced a change to its policy for similar cases. This case involved email. <a href="https://blogs.microsoft.com/on-the-issues/2014/03/28/were-listening-additional-steps-to-protect-your-privacy/" rel="noreferrer">Microsoft account of the investigation</a>.</li>
+<li><strong>Microsoft Exchange Online intrusion, 2023.</strong> An attacker used a Microsoft signing key to gain access to mailboxes. A signing key can let a service verify a sign-in token. This incident involved email and sign-in controls. <a href="https://www.cisa.gov/sites/default/files/2024-04/CSRB_Review_of_the_Summer_2023_MEO_Intrusion_Final_508c.pdf" rel="noreferrer">Cyber Safety Review Board report</a>.</li>
+</ul>
+<p>For an example of authorized app access, see <a href="/guides/gemini-connected-apps-human-review/">what Gemini reviewers can see from connected Gmail and Drive</a>.</p>
+<h2 id="encrypt-the-file-before-upload">Encrypt the file before upload</h2>
+<p>Client-side encryption means that your device encrypts the file before you send it to another system.</p>
+<p>Encryptfs creates an .efs vault in your browser. It uses your password to make a key. The cloud provider receives the encrypted vault when you upload it.</p>
+<ol>
+<li><a href="/">Open encryptfs</a>.</li>
+<li>Add the files that you want to protect.</li>
+<li>Encrypt them with a long password that you use only for these vaults.</li>
+<li>Upload the .efs vaults to your cloud storage.</li>
+<li>Keep the password in a password manager.</li>
+<li>Download one vault and test that you can open it.</li>
+</ol>
+<p>For the full procedure, see <a href="/guides/encrypt-photos-videos-google-drive-icloud/">how to encrypt files before upload</a>.</p>
+<h2 id="what-an-efs-vault-protects">What an .efs vault protects</h2>
+<p>The vault encrypts the original names and file contents. The provider can still see the vault name, its size, and information about the upload.</p>
+<p>Someone who obtains a vault can try passwords on their own device. Use a long password that is difficult to guess.</p>
+<p>A vault cannot protect files on a device that an attacker controls. An attacker who can change the app can capture your password.</p>
+<p>The app cannot recover a lost vault password. Keep a separate backup to protect against deletion or loss.</p>
+<p>Read the <a href="/efs/">format and security guide</a> for more information. The format and implementation still need an independent security review.</p>
+</div><footer class="post-footer"><a href="/" class="primary-button">Open encryptfs</a><a href="/efs/">Read about the .efs format</a></footer></article></main></body></html>

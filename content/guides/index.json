@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "encrypt-photos-videos-google-drive-icloud",
+    "title": "How to encrypt photos and videos before uploading to Google Drive or iCloud",
+    "description": "Encrypt photos and videos with a password, upload the .efs files, and test that you can restore them.",
+    "published": "2026-10-19",
+    "category": "Photos and videos"
+  },
+  {
+    "slug": "play-large-encrypted-video",
+    "title": "How to play a large encrypted video without saving a decrypted copy",
+    "description": "Open an .efs vault and play a video with on-demand preview.",
+    "published": "2026-09-18",
+    "category": "Photos and videos"
+  },
+  {
+    "slug": "cloud-storage-encryption-at-rest",
+    "title": "What cloud storage encryption at rest protects",
+    "description": "See who controls the keys and how to encrypt files before you upload them.",
+    "published": "2026-09-18",
+    "category": "Cloud storage"
+  },
+  {
+    "slug": "gemini-connected-apps-human-review",
+    "title": "What Gemini reviewers can see from connected Gmail and Drive",
+    "description": "Check what connected apps can share with Gemini and how to protect private files.",
+    "published": "2026-09-18",
+    "category": "Cloud storage"
+  }
+]

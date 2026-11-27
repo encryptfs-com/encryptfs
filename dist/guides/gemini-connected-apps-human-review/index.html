@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Check what connected apps can share with Gemini and how to protect private files."><meta name="color-scheme" content="dark"><meta name="theme-color" content="#18191c"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>What Gemini reviewers can see from connected Gmail and Drive — encryptfs</title><meta property="og:title" content="What Gemini reviewers can see from connected Gmail and Drive"><meta property="og:description" content="Check what connected apps can share with Gemini and how to protect private files."><meta property="og:type" content="article"><meta property="article:published_time" content="2026-09-18T00:00:00Z"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/efs/guide.css"><link rel="stylesheet" href="/guides/guides.css"><link rel="describedby" href="/llms.txt" type="text/plain"><link rel="alternate" href="/guides/gemini-connected-apps-human-review/index.md" type="text/markdown"></head>
+<body><header class="site-header"><a href="/" class="brand" aria-label="encryptfs home"><img class="brand-mark" src="/favicon.svg" width="30" height="30" alt="">encrypt<span class="brand-fs">fs</span></a><nav class="reading-nav" aria-label="Main navigation"><a href="/guides/">Guides</a><a href="/efs/">File format</a><a href="/" class="secondary-button">Open encryptfs</a></nav></header><main class="efs-main guides-main"><article class="guide-post"><a href="/guides/" class="back-link">← All guides</a><header class="guide-intro"><span class="guide-version">FILE PRIVACY GUIDE</span><h1>What Gemini reviewers can see from connected Gmail and Drive</h1><time datetime="2026-09-18">September 18, 2026</time></header><div class="post-body"><p>Google says people review some data that consumer Gemini processes from connected apps. This guide covers the Gemini app with a personal Google Account. <a href="https://support.google.com/gemini/answer/16836988?hl=en-45" rel="noreferrer">Google’s Connected Apps privacy guidance</a></p>
+<h2 id="when-gemini-can-use-your-files">When Gemini can use your files</h2>
+<p>A connected app gives Gemini access to data from another service. The <strong>Google Workspace</strong> connection can give consumer Gemini access to Gmail and Drive.</p>
+<p>Google says reviewers can see summaries or excerpts from relevant emails and files. In some cases, a reviewer can see the complete email or file. This applies to some data that Gemini processes through the connection. Storage in Drive alone does not put a file into Gemini’s review process. <a href="https://support.google.com/gemini/answer/16836988?hl=en-45" rel="noreferrer">Google’s description of human review</a></p>
+<figure class="guide-diagram"><img src="/guides/diagrams/gemini-human-review.svg" alt="A connected app can give Gemini readable data from Gmail or Drive. Google can send some of the data that Gemini processes to human reviewers."></figure>
+<p>Google says it takes steps to reduce personal information before service providers review interactions. Google describes exceptions for abuse or harm. Work and school accounts can have different settings and policies. <a href="https://support.google.com/gemini/answer/16836988?hl=en-45" rel="noreferrer">Google’s privacy guidance for connected apps</a> · <a href="https://support.google.com/gemini/answer/14959807?hl=en" rel="noreferrer">Google’s work and school guidance</a></p>
+<h2 id="disconnect-gmail-and-drive-from-consumer-gemini">Disconnect Gmail and Drive from consumer Gemini</h2>
+<ol>
+<li>Open <a href="https://gemini.google.com/" rel="noreferrer">Gemini</a> on a computer.</li>
+<li>Select <strong>Settings</strong>.</li>
+<li>Select <strong>Personal Intelligence</strong>.</li>
+<li>Select <strong>Connected Apps</strong>.</li>
+<li>Find <strong>Google Workspace</strong>.</li>
+<li>Open <strong>More options</strong>.</li>
+<li>Select <strong>Disconnect</strong>.</li>
+</ol>
+<p>If your settings show a switch for the connection, turn it off. <a href="https://support.google.com/gemini/answer/16598406?co=GENIE.Platform%3DDesktop&amp;hl=en" rel="noreferrer">Google’s instructions for Connected Apps</a></p>
+<p>Disconnecting an app does not remove the data already in Gemini history. Use <strong>Settings</strong> and <strong>History</strong> to find and delete past activity. Google says it can keep reviewed chats for up to three years after you delete your history. <a href="https://support.google.com/gemini/answer/13278892" rel="noreferrer">Google’s history instructions</a> · <a href="https://support.google.com/gemini/answer/13594961?hl=en&amp;pass=1" rel="noreferrer">Gemini Apps Privacy Hub</a></p>
+<h2 id="encrypt-private-files-before-upload">Encrypt private files before upload</h2>
+<p>Encryption at rest protects data on storage media. A provider can still give an authorized service access to readable data. <a href="/guides/cloud-storage-encryption-at-rest/">How cloud storage encryption at rest works</a></p>
+<p>Encryptfs creates an encrypted .efs vault in your browser. Your browser makes the vault key from your password. When you upload the vault to Drive, Google receives the encrypted file. The upload does not give Google the vault password.</p>
+<ol>
+<li><a href="/guides/encrypt-photos-videos-google-drive-icloud/">Encrypt the file before you upload it</a>.</li>
+<li>Upload the .efs vault to Drive.</li>
+<li>Keep the vault password separate from the upload.</li>
+<li>Open the vault in encryptfs when you need to read its contents.</li>
+</ol>
+<p>A vault protects the copy inside it. It does not change readable copies already in Drive, email, or Gemini history. Pasting decrypted text into Gemini or attaching a decrypted file gives Gemini a readable copy.</p>
+<p>Drive can still see the vault’s external name, size, and upload details. Use a long password and keep a separate backup. The app cannot recover a lost vault password. <a href="/efs/">The .efs format and its limits</a></p>
+</div><footer class="post-footer"><a href="/" class="primary-button">Open encryptfs</a><a href="/efs/">Read about the .efs format</a></footer></article></main></body></html>

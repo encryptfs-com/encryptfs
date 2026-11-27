@@ -1,0 +1,6 @@
+# encryptfs guides
+
+- [How to encrypt photos and videos before uploading to Google Drive or iCloud](/guides/encrypt-photos-videos-google-drive-icloud/index.md): Encrypt photos and videos with a password, upload the .efs files, and test that you can restore them.
+- [How to play a large encrypted video without saving a decrypted copy](/guides/play-large-encrypted-video/index.md): Open an .efs vault and play a video with on-demand preview.
+- [What cloud storage encryption at rest protects](/guides/cloud-storage-encryption-at-rest/index.md): See who controls the keys and how to encrypt files before you upload them.
+- [What Gemini reviewers can see from connected Gmail and Drive](/guides/gemini-connected-apps-human-review/index.md): Check what connected apps can share with Gemini and how to protect private files.

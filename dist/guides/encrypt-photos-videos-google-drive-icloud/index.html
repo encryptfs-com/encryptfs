@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Encrypt photos and videos with a password, upload the .efs files, and test that you can restore them."><meta name="color-scheme" content="dark"><meta name="theme-color" content="#18191c"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>How to encrypt photos and videos before uploading to Google Drive or iCloud — encryptfs</title><meta property="og:title" content="How to encrypt photos and videos before uploading to Google Drive or iCloud"><meta property="og:description" content="Encrypt photos and videos with a password, upload the .efs files, and test that you can restore them."><meta property="og:type" content="article"><meta property="article:published_time" content="2026-10-19T00:00:00Z"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/efs/guide.css"><link rel="stylesheet" href="/guides/guides.css"><link rel="describedby" href="/llms.txt" type="text/plain"><link rel="alternate" href="/guides/encrypt-photos-videos-google-drive-icloud/index.md" type="text/markdown"></head>
+<body><header class="site-header"><a href="/" class="brand" aria-label="encryptfs home"><img class="brand-mark" src="/favicon.svg" width="30" height="30" alt="">encrypt<span class="brand-fs">fs</span></a><nav class="reading-nav" aria-label="Main navigation"><a href="/guides/">Guides</a><a href="/efs/">File format</a><a href="/" class="secondary-button">Open encryptfs</a></nav></header><main class="efs-main guides-main"><article class="guide-post"><a href="/guides/" class="back-link">← All guides</a><header class="guide-intro"><span class="guide-version">FILE PRIVACY GUIDE</span><h1>How to encrypt photos and videos before uploading to Google Drive or iCloud</h1><time datetime="2026-10-19">October 19, 2026</time></header><div class="post-body"><p>Encrypt your photos and videos on your device before you upload them. Then store the encrypted files in Google Drive or iCloud Drive.</p>
+<p>With encryptfs, each encrypted file has the <code>.efs</code> extension. You need its password to read the original names and contents.</p>
+<aside class="guide-note">Use <strong>iCloud Drive</strong> for .efs files. Do not use iCloud Photos to store encrypted vaults as photos or videos.</aside>
+<figure class="guide-diagram"><img src="/guides/diagrams/vault-upload.svg" alt="Encrypt the originals on your device. Then upload the .efs vault to cloud storage. Keep your password separate."></figure>
+<h2 id="what-you-need">What you need</h2>
+<ul>
+<li>The original photo and video files on your device.</li>
+<li>A browser that supports encryptfs.</li>
+<li>Enough free space for the encrypted copies.</li>
+<li>A Google Drive or iCloud Drive account with enough storage.</li>
+<li>A long password that you do not use elsewhere.</li>
+</ul>
+<p>If your media is in a photo library, export the original files first. Keep a separate copy while you test this process.</p>
+<p><strong>There is no password recovery.</strong> Store the password in a password manager. Keep it separate from the encrypted files.</p>
+<h2 id="1-encrypt-the-files-in-your-browser">1. Encrypt the files in your browser</h2>
+<ol>
+<li><a href="/">Open encryptfs</a>.</li>
+<li>Select the <strong>Encrypt</strong> tab.</li>
+<li>Select <strong>Add files</strong>.</li>
+<li>Choose the photos and videos that you want to protect.</li>
+<li>Select the checkboxes for those files.</li>
+<li>Enter a password.</li>
+<li>Enter the same password in <strong>Confirm password</strong>.</li>
+<li>Select <strong>Encrypt selected</strong>.</li>
+<li>Wait for the encrypted files to appear below.</li>
+</ol>
+<p>By default, encryptfs creates one .efs vault for each selected file.</p>
+<p>For one vault that contains the whole selection, select <strong>place in one .efs folder</strong> before encryption. Enter a folder name.</p>
+<p>The progress bar counts file bytes. Password checks and final disk writes take additional time. The percentage is not a time estimate.</p>
+<h2 id="2-download-the-encrypted-copies">2. Download the encrypted copies</h2>
+<p>If the browser cannot store the encrypted output, encryptfs may offer <strong>Retry to a folder…</strong>. Enter the password again. Then select <strong>Retry to a folder…</strong> and choose a folder with enough free space. Encryptfs saves only the .efs vaults there. Use those vaults in the upload steps.</p>
+<ol>
+<li>Find the output in <strong>Export encrypted files</strong>.</li>
+<li>Check the source name beside each output filename.</li>
+<li>Use the random name or enter a new name.</li>
+<li>Select <strong>Export</strong> for each vault or <strong>Export this group</strong>.</li>
+<li>Check that the vaults are in your browser downloads.</li>
+</ol>
+<p>A name such as <code>family-passports.efs</code> can reveal information. A random name gives less information about the contents.</p>
+<p>Keep this browser tab open until you confirm the downloads. A retry link remains available for two minutes after a download request.</p>
+<p>Encryption does not remove the source photos or videos. It creates separate encrypted copies.</p>
+<h2 id="3-upload-the-vaults-to-google-drive">3. Upload the vaults to Google Drive</h2>
+<ol>
+<li>Open <a href="https://drive.google.com/" rel="noreferrer">Google Drive</a> in your browser.</li>
+<li>Sign in to your Google Account.</li>
+<li>Open the folder where you want to store the vaults.</li>
+<li>Select <strong>New</strong>.</li>
+<li>Select <strong>File upload</strong>.</li>
+<li>Choose the downloaded .efs files.</li>
+<li>Wait for the upload to finish.</li>
+</ol>
+<p>Upload the .efs copies that you downloaded in step 2. Do not select the original photos or videos for this upload.</p>
+<p>Google shows these steps in its <a href="https://support.google.com/drive/answer/2424368?hl=en" rel="noreferrer">file upload instructions</a>.</p>
+<h2 id="4-or-upload-the-vaults-to-icloud-drive">4. Or upload the vaults to iCloud Drive</h2>
+<ol>
+<li>Open <a href="https://www.icloud.com/iclouddrive/" rel="noreferrer">iCloud Drive</a> in your browser.</li>
+<li>Sign in to your Apple Account.</li>
+<li>Open the folder where you want to store the vaults.</li>
+<li>Select the file upload button.</li>
+<li>Choose the downloaded .efs files.</li>
+<li>Wait for the upload to finish.</li>
+</ol>
+<p>Use the file picker to select the .efs files. Do not select Photo Library.</p>
+<p>Apple shows these steps in its <a href="https://support.apple.com/guide/icloud/upload-and-download-files-mmad632d1df2/icloud" rel="noreferrer">iCloud Drive upload instructions</a>.</p>
+<p>iCloud Drive stores the vault as a file. The vault has no photo previews or video playback in iCloud Photos.</p>
+<h2 id="5-test-a-restore-before-you-remove-any-originals">5. Test a restore before you remove any originals</h2>
+<ol>
+<li>Download one .efs vault from Google Drive or iCloud Drive.</li>
+<li>Open encryptfs in a new tab.</li>
+<li>Add the downloaded vault.</li>
+<li>Open the <strong>Decrypt</strong> tab if it is not already open.</li>
+<li>Enter the password.</li>
+<li>Select <strong>Unlock filenames</strong>.</li>
+<li>Select one file that you want to test.</li>
+<li>If the button says <strong>Decrypt selected</strong>, select it.</li>
+<li>Check that you can preview the result or open a downloaded copy.</li>
+</ol>
+<p>If the button says <strong>Preview on demand</strong>, select it. Check that the video plays. Playback checks only the parts that the player reads.</p>
+<p>Test that you can restore your files before you remove originals. For a full restore test, make a complete decrypted copy and open it.</p>
+<p>A decrypted download is readable on disk. For a local copy only, use a folder without cloud sync.</p>
+<h2 id="what-this-method-protects">What this method protects</h2>
+<p>The vault encrypts the file contents and original names. This includes photo metadata that is stored inside the original file.</p>
+<p>The cloud service can still see the vault filename and size. Your cloud account and upload records also remain visible to the service.</p>
+<p>Read the <a href="/efs/">format and security guide</a> for the encryption settings and known limits. The current app has not had an independent security review.</p>
+<h2 id="common-questions">Common questions</h2>
+<h3 id="can-i-view-encrypted-photos-in-the-cloud">Can I view encrypted photos in the cloud?</h3>
+<p>Open the .efs vault in encryptfs to read the photos or videos. Cloud photo services cannot read the vault contents.</p>
+<h3 id="does-this-protect-photos-that-i-uploaded-earlier">Does this protect photos that I uploaded earlier?</h3>
+<p>No. This process does not change existing cloud copies.</p>
+<p>If automatic photo backup is on, original files may already be in the cloud. Check your backup and sync settings separately.</p>
+<h3 id="does-encryption-make-the-files-smaller">Does encryption make the files smaller?</h3>
+<p>No. The .efs format does not compress the media. Encryption adds a small amount of data for file details and checks.</p>
+<h3 id="can-i-encrypt-a-large-video">Can I encrypt a large video?</h3>
+<p>There is no fixed app file-size cap. Your browser, available disk space, and cloud storage limits still apply.</p>
+<p>For playback, see <a href="/guides/play-large-encrypted-video/">how to preview a large encrypted video</a>. Full-file decryption can reach browser memory or storage limits.</p>
+<h3 id="can-i-recover-a-lost-password">Can I recover a lost password?</h3>
+<p>No. Neither encryptfs nor the cloud service can recover the vault password for you.</p>
+<p>Keep the password safe. Keep a separate backup of important files.</p>
+</div><footer class="post-footer"><a href="/" class="primary-button">Open encryptfs</a><a href="/efs/">Read about the .efs format</a></footer></article></main></body></html>

@@ -1,0 +1,10 @@
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+/ai-catalog.json
+  Content-Type: application/json; charset=utf-8
+/.well-known/ai-catalog.json
+  Content-Type: application/json; charset=utf-8
+/efs/format-v1.md
+  Content-Type: text/plain; charset=utf-8

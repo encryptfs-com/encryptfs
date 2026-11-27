@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Vault read diagnostic</title>
+<h1>Vault read diagnostic</h1>
+<p>Select the vault to test the failing byte offset and scan the ciphertext. This test uses no password and creates no decrypted output.</p>
+<label>Vault <input id="vault" type="file" accept=".efs"></label>
+<p id="status" role="status">Choose a vault to start.</p>
+<form id="verify">
+  <p>Authenticate every chunk and discard the plaintext as it is decrypted. Your password stays in this tab and its worker.</p>
+  <label>Password <input id="password" type="password" autocomplete="off" required></label>
+  <button>Verify contents</button>
+</form>
+<script type="module">
+  const input = document.getElementById('vault');
+  const status = document.getElementById('status');
+  const password = document.getElementById('password');
+  let worker;
+  function run(action) {
+    worker?.terminate();
+    const file = input.files[0];
+    if (!file) {
+      status.textContent = 'Choose a vault to start.';
+      return;
+    }
+    status.textContent = 'Starting test…';
+    worker = new Worker('./vault-read.js', { type: 'module' });
+    worker.onmessage = ({ data }) => { status.textContent = data; };
+    worker.onerror = () => { status.textContent = 'The test worker stopped.'; };
+    worker.postMessage({ action, file, password: action === 'verify' ? password.value : undefined });
+    password.value = '';
+  }
+  input.addEventListener('change', () => run('scan'));
+  document.getElementById('verify').addEventListener('submit', event => {
+    event.preventDefault();
+    run('verify');
+  });
+</script>
+</html>

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Encrypt, decrypt, and view files in your browser, all on-device.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="encryptfs">
+  <meta property="og:title" content="Encrypt, decrypt, and view files in your browser, all on-device.">
+  <meta property="og:description" content="Create password-protected .efs vaults and view supported files, including large videos, in encryptfs.">
+  <meta property="og:url" content="https://encryptfs.com/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Encrypt, decrypt, and view files in your browser, all on-device.">
+  <meta name="twitter:description" content="Create password-protected .efs vaults and view supported files, including large videos, in encryptfs.">
+  <link rel="canonical" href="https://encryptfs.com/">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://accounts.google.com/gsi/client https://apis.google.com https://www.gstatic.com https://www.dropbox.com/static/api/2/dropins.js; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; img-src 'self' blob: data:; media-src 'self' blob:; font-src 'self' blob:; frame-src https://login.microsoftonline.com https://accounts.google.com https://apis.google.com https://docs.google.com https://www.dropbox.com; object-src 'none'; connect-src 'self' https://login.microsoftonline.com https://graph.microsoft.com https://*.1drv.com https://*.sharepoint.com https://*.storage.live.com https://*.onedrive.live.com https://www.googleapis.com https://accounts.google.com https://apis.google.com https://docs.google.com https://www.dropbox.com https://dl.dropbox.com https://dropboxusercontent.com https://*.dropboxusercontent.com; worker-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#18191c">
+  <meta name="referrer" content="no-referrer">
+  <title>encryptfs — Encrypt, decrypt, and view files in your browser, all on-device.</title>
+  <link rel="describedby" href="/llms.txt" type="text/plain">
+  <link rel="ai-catalog" href="/.well-known/ai-catalog.json" type="application/json">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./file-flow.css">
+  <link rel="stylesheet" href="./landing.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a href="./" class="brand" aria-label="encryptfs home"><img class="brand-mark" src="./favicon.svg" width="30" height="30" alt="">encrypt<span class="brand-fs">fs</span></a>
+    <div class="header-right"><a href="/guides/" class="header-guides" target="_blank" rel="noopener" aria-label="Guides (opens in a new tab)">Guides</a><button class="text-button" id="about-button">Help</button></div>
+  </header>
+  <main>
+    <section class="landing" aria-labelledby="landing-title">
+      <div class="landing-copy">
+        <h1 id="landing-title">Lock your files.<br><span>Keep the key.</span></h1>
+        <p>Encrypt, decrypt, and view files in your browser, all on-device.</p>
+        <div class="landing-actions">
+          <a class="primary-button" href="#workspace">Free - no signup <span aria-hidden="true">↓</span></a>
+          <a class="landing-guide" href="/efs/" target="_blank" rel="noopener">How .efs works <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
+        <ul class="landing-features">
+          <li>Password-protected .efs vaults</li>
+          <li>On-demand video playback</li>
+        </ul>
+      </div>
+      <div class="landing-visual" aria-hidden="true">
+        <div class="landing-orbit landing-orbit-outer"></div>
+        <div class="landing-orbit landing-orbit-inner"></div>
+        <div class="landing-vault">
+          <img src="./favicon.svg" width="100" height="100" alt="">
+          <span>.efs</span>
+        </div>
+      </div>
+    </section>
+    <section id="unsupported" class="notice error" hidden><strong>This browser is not supported.</strong> encryptfs needs Web Crypto, module workers, and a secure connection (HTTPS or localhost). Please use a current compatible browser.</section>
+    <section id="workspace" class="workspace-container" aria-label="File workspace" tabindex="-1">
+      <div class="workspace-navigation">
+        <div class="workspace-tabs" role="tablist" aria-label="File operation">
+          <button id="encrypt-tab" role="tab" aria-selected="true" aria-controls="encrypt-view" tabindex="0">Encrypt <span id="encrypt-tab-count" class="count">0</span></button>
+          <button id="decrypt-tab" role="tab" aria-selected="false" aria-controls="decrypt-view" tabindex="-1">Decrypt <span id="decrypt-tab-count" class="count">0</span></button>
+        </div>
+        <div class="workspace-tools"><button id="add-files" class="primary-button add-local-button">＋ Add files</button><button id="import-drive" hidden class="text-button provider-icon-button" type="button" aria-label="Import from Google Drive" title="Import from Google Drive"><img src="./icons/google-drive.svg" width="21" height="21" alt="" aria-hidden="true"></button><button id="import-dropbox" hidden class="text-button provider-icon-button" type="button" aria-label="Import from Dropbox" title="Import from Dropbox"><img src="./icons/dropbox.svg" width="21" height="21" alt="" aria-hidden="true"></button><button id="import-onedrive" hidden class="text-button provider-icon-button" type="button" aria-label="Import from OneDrive" title="Import from OneDrive"><img src="./icons/onedrive.svg" width="21" height="21" alt="" aria-hidden="true"></button><button id="disconnect-drive" class="text-button" type="button" hidden>Disconnect Drive</button><span class="tooltip-control"><button id="clear-button" class="text-button provider-icon-button" type="button" aria-label="Clear workspace" aria-describedby="clear-workspace-tooltip"><img src="./icons/clear-workspace.svg" width="20" height="20" alt="" aria-hidden="true"></button><span id="clear-workspace-tooltip" class="control-tooltip" role="tooltip" hidden>Clear workspace</span></span></div>
+      </div>
+      <section id="file-flow" class="file-flow" data-mode="encrypt" aria-label="Encrypt photos, videos, and documents into .efs vaults">
+        <div class="flow-files">
+          <div class="flow-file"><span class="flow-sheet"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="8" cy="9" r="1.5"/><path d="m4 18 5-5 3 3 4-6 5 8"/></svg></span><span>Photos</span></div>
+          <div class="flow-file"><span class="flow-sheet"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="m10 8 6 4-6 4Z"/></svg></span><span>Videos</span></div>
+          <div class="flow-file"><span class="flow-sheet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6Z M14 3v5h4 M9 12h6 M9 16h6"/></svg></span><span>Documents</span></div>
+        </div>
+        <div class="flow-bridge"><span id="flow-action">Encrypt with a password</span><svg viewBox="0 0 160 12" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6h157m-5-5 5 5-5 5"/></svg></div>
+        <a class="flow-vault" href="/efs" target="_blank" rel="noopener" aria-label=".efs vaults: format and security guide (opens in a new tab)">
+          <svg viewBox="0 0 32 40" aria-hidden="true"><path d="M5 2h15l7 7v29H5Z M20 2v8h7"/><rect x="10" y="21" width="12" height="10" rx="1"/><path d="M12 21v-3a4 4 0 0 1 8 0v3 M16 25v2"/></svg>
+          <span><strong>.efs vaults ↗</strong><small>Format &amp; security</small></span>
+        </a>
+      </section>
+      <input id="file-input" type="file" multiple hidden>
+      <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="Add files to workspace"><span aria-hidden="true">↥</span><p id="drop-description">Drop files to encrypt, or click to browse.</p></div>
+      <div id="operation" class="operation" hidden><div><span id="operation-label"></span><button id="cancel-button" class="text-button">Cancel</button></div><progress id="operation-progress" aria-label="Operation progress"></progress></div>
+      <section id="encrypt-view" role="tabpanel" aria-labelledby="encrypt-tab">
+        <section class="file-pane" aria-labelledby="plain-title">
+          <div class="pane-heading"><div><h2 id="plain-title">Files to encrypt <span id="plain-count" class="count">0</span></h2><p>Select files, choose a password, then encrypt.</p></div><span id="plain-size" class="muted">0 B</span></div>
+          <div class="column-headings"><label><input id="plain-select-all" type="checkbox" aria-label="Select all files to encrypt"><span>Name</span></label><span>Status</span><span>Size</span><span class="actions-heading">Actions</span></div>
+          <div id="plain-list" class="file-list" role="group" aria-label="Files to encrypt"></div>
+          <form id="encrypt-form" class="encrypt-controls">
+            <div class="password-field"><label for="encrypt-password">Password</label><div class="password-wrap"><input id="encrypt-password" type="password" placeholder="Choose a strong password" autocomplete="off" spellcheck="false" required><button type="button" class="password-toggle" data-for="encrypt-password" aria-label="Show encryption password">Show</button></div></div>
+            <div class="password-field"><label for="confirm-password">Confirm password</label><input id="confirm-password" type="password" placeholder="Enter it again" autocomplete="off" spellcheck="false" required></div>
+            <div class="folder-options"><label class="check-label"><input id="as-folder" type="checkbox"> place in one .efs folder</label><label id="folder-name-label" for="folder-name" hidden>Folder name<input id="folder-name" value="Encrypted folder" maxlength="100"></label></div>
+            <button id="encrypt-button" class="primary-button" type="submit">Encrypt selected</button>
+            <div id="encrypt-storage-retry" class="encrypt-storage-retry" hidden>
+              <p id="encrypt-storage-explanation">The browser could not store the encrypted output. Its temporary storage can run out of space or become unavailable. Enter the password again to retry the failed files. Choose a folder with enough free space. Encryptfs saves only encrypted .efs files there. They stay there after you close this tab.</p>
+              <button id="encrypt-to-folder" class="secondary-button" type="submit" aria-describedby="encrypt-storage-explanation">Retry to a folder…</button>
+            </div>
+          </form>
+        </section>
+        <section id="export-section" class="export-section" aria-labelledby="export-title" hidden>
+          <div class="pane-heading"><div><h2 id="export-title">Export encrypted files <span class="count" id="export-count">0</span></h2><p>Rename if you like. Exported files leave the workspace.</p></div></div>
+          <div id="export-list" class="export-list"></div>
+        </section>
+      </section>
+      <section id="decrypt-view" role="tabpanel" aria-labelledby="decrypt-tab" hidden>
+        <section class="file-pane" aria-labelledby="encrypted-title">
+          <div class="pane-heading"><div><h2 id="encrypted-title">Encrypted files <span class="count" id="encrypted-count">0</span></h2><p>Reveal original filenames by unlocking files with a password first, then choose which ones to decrypt</p></div><span id="ready-count" class="muted">0 unlocked · 0 locked</span></div>
+          <form id="unlock-form" class="unlock-controls" hidden><label for="unlock-password">Unlock filenames</label><div class="password-wrap"><input id="unlock-password" type="password" placeholder="Enter a password" autocomplete="off" spellcheck="false" required><button type="button" class="password-toggle" data-for="unlock-password" aria-label="Show decryption password">Show</button></div><button id="unlock-button" class="secondary-button" type="submit">Unlock filenames</button></form>
+          <div class="results-search"><label for="encrypted-search">Search unlocked files</label><div class="search-field"><input id="encrypted-search" type="search" placeholder="Search filenames and folders" autocomplete="off" spellcheck="false" aria-controls="encrypted-list"><button id="clear-encrypted-search" class="text-button" type="button" hidden>Clear</button></div><button id="sort-encrypted" class="text-button" type="button">Name ↑</button><span id="encrypted-search-summary" role="status" aria-live="polite"></span></div>
+          <div class="column-headings"><label><input id="encrypted-select-all" type="checkbox" aria-label="Select all ready files"><span>Name</span></label><span>Status</span><span>Size</span><span class="actions-heading">Actions</span></div>
+          <div id="encrypted-list" class="file-list" role="group" aria-label="Encrypted files"></div>
+          <div class="pane-actionbar" id="decrypt-actions"><p id="decrypt-selection-summary">Select unlocked files to decrypt.</p><button id="decrypt-button" class="primary-button">Decrypt selected ↓</button></div>
+        </section>
+        <section id="results-pane" class="results-pane" aria-labelledby="results-title">
+          <div class="pane-heading"><div><h2 id="results-title">Decrypted files <span id="results-count" class="count">0</span></h2><p>Select a file to preview it, or download the original.</p></div></div>
+          <div class="results-search"><label for="results-search">Search decrypted files</label><div class="search-field"><input id="results-search" type="search" placeholder="Search filenames and folders" autocomplete="off" spellcheck="false" aria-controls="results-list"><button id="clear-results-search" class="text-button" type="button" hidden>Clear</button></div><span id="results-search-summary" role="status" aria-live="polite"></span></div>
+          <div class="results-split"><div class="results-files"><div class="column-headings"><label><input id="results-select-all" type="checkbox" aria-label="Select all decrypted files"><span>Name</span></label><span>Status</span><span>Size</span><span class="actions-heading">Actions</span></div><div id="results-list" class="file-list" role="group" aria-label="Decrypted files"></div></div>
+            <section class="inline-preview" aria-label="Decrypted file preview"><div class="preview-toolbar"><h3 id="inline-preview-title">Preview</h3><button id="close-inline-preview" class="icon-button" aria-label="Clear preview" hidden>✕</button></div><div id="inline-preview-content" class="preview-body"><p>Select a decrypted file to preview it.</p></div><p id="inline-preview-caption" class="preview-caption"></p></section>
+          </div>
+          <div class="pane-actionbar results-actionbar"><p id="results-selection-summary">Select files to download or re-encrypt.</p><div class="results-actions"><button id="download-selected" class="primary-button" type="button" disabled>Download selected</button><button id="change-password" class="secondary-button" type="button" disabled>Re-encrypt selected…</button></div></div>
+        </section>
+      </section>
+      <section id="download-receipts" class="download-receipts" aria-labelledby="receipts-title" hidden><h2 id="receipts-title">Downloads requested</h2><p>Check your browser downloads. Retry links expire after 2 minutes. Temporary encrypted output is cleared with this tab.</p><div id="receipts-list"></div></section>
+      <details id="failure-summary" class="failure-summary" hidden><summary id="failure-title">Failed files</summary><div id="failure-list"></div><button id="clear-failures" class="text-button" type="button">Dismiss failure details</button></details>
+    </section>
+  </main>
+  <footer class="deployment-stamp"><time id="deployment-time" datetime="2026-11-26T21:00:52.475Z">Last updated 2026-11-26 21:00:52 UTC</time></footer>
+  <div id="messages" aria-live="polite" aria-atomic="true" role="status"></div>
+  <dialog id="preview-dialog"><div class="dialog-heading"><h2 id="preview-title">Preview</h2><button id="close-preview" class="icon-button" aria-label="Close preview">✕</button></div><div id="preview-content"></div><p id="preview-caption" class="muted"></p></dialog>
+  <dialog id="about-dialog"><div class="dialog-heading"><h2>Private, from start to finish.</h2><button id="close-about" class="icon-button" aria-label="Close help">✕</button></div><div class="about-content"><p>Use Encrypt for ordinary files and Decrypt for .efs containers. Imports are routed to the right tab automatically.</p><p>Use the Extract ZIP action on an imported or decrypted .zip file. The extracted files appear in the same list under the archive name. Password-protected ZIP files are unsupported.</p><p>Encryption protects original names, file types, folder details, and contents. Downloads get random UUID names that you can change before saving. Once a download is requested, the encrypted output leaves the export list. A retry copy stays in this tab for two minutes. Check your browser downloads to confirm it saved.</p><p>In Decrypt, unlock filenames with a password to reveal matching names in the upper list. Select the files you want to decrypt; the results appear in the lower list with an inline preview. Folder contents can be selected individually. Use Preview beside an unlocked MOV, MP4, or WebM to play it on demand. The app decrypts the bytes the player requests without creating a full decrypted file.</p><p><strong>There is no password recovery.</strong> To change a password, select decrypted files and choose Re-encrypt selected. Only the selected files move to Encrypt. You must delete old encrypted copies yourself.</p><p>There is no fixed app file-size limit. Encrypted output uses temporary browser storage when supported. If the browser cannot store it, a supported browser can offer a retry to a folder you choose. The folder receives only encrypted .efs files. Decryption keeps results in this tab as browser-managed Blobs. Large files can reach browser limits. Temporary encrypted files can remain after a crash; the app removes them on a later visit. Progress shows the percentage of content bytes processed. Password checks and final disk writes take additional time. PDF previews use a locally bundled renderer. Google Drive, Dropbox, and OneDrive connect only when requested and download selected files directly into this browser. Tokens and temporary download links stay in memory. Provider scripts load only when you use their importer.</p><p>This is an initial implementation awaiting independent security review. Your browser and the code delivered to it are part of the trust boundary.</p></div></dialog>
+</body>
+</html>

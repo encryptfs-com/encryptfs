@@ -1,0 +1,17 @@
+{
+  "password": "encryptfs interoperability 🔑",
+  "plaintext": "Hello from encryptfs.\n",
+  "manifest": {
+    "kind": "file",
+    "name": "hello.txt",
+    "entries": [
+      {
+        "path": "hello.txt",
+        "size": 22,
+        "type": "text/plain",
+        "lastModified": 1700000000000
+      }
+    ]
+  },
+  "containerBase64": "RUZTAA0KGgoAAQAAAAEAAAAJJ8AAEAAArGB89uOFAQ5Sffv35RzFk6CLg03/NgLCQCFb6rCKSt4AAACOAAAAAAmVlZSaz5Nz8MX3pCkYFqT9iTm+AlU16nGZcvMt1rQnQTb1YZqxrDlzgkoKWnlvANxaHJATJDiTNyL9hxPFwxTd+YN0oRYRrHoJ8+G7Xgzcoa8yiARAvBOHAR4Ppk9W5DgHcT6m5kVQ8pUH+vaC0QV8IjWPsx1cNgr4R+t8YyTD5BBxf/tDLbiNuUM6EZngu5bMVC9fytIl8zpYfYb4PVKXMKCWRDiYNtNqfqdl9HX4MVUNHw=="
+}

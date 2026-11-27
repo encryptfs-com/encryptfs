@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="How .efs files protect file contents and original names. A plain-language guide to the format, encryption, and limits.">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#18191c">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>The .efs file format — encryptfs</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/efs/guide.css">
+  <link rel="stylesheet" href="/guides/guides.css">
+</head>
+<body>
+  <header class="site-header"><a href="/" class="brand" aria-label="encryptfs home">encrypt<span class="brand-fs">fs</span></a><nav class="reading-nav" aria-label="Main navigation"><a href="/guides/">Guides</a><a href="/" class="secondary-button">Open encryptfs</a></nav></header>
+  <main class="efs-main">
+    <article>
+      <header class="guide-intro"><span class="guide-version">FILE FORMAT · VERSION 1.0</span><h1>Inside an .efs vault</h1><p>An .efs vault is an encrypted file. It can contain one file or a group of files.</p><p>Encryption protects the contents and original names. You need the correct password to read them.</p></header>
+      <nav class="guide-nav" aria-label="On this page"><a href="#inside">File structure</a><a href="#encryption">Encryption</a><a href="#checks">Data checks</a><a href="#limits">Limits</a></nav>
+
+      <section id="inside"><h2>What is inside the file?</h2><p>Each vault has three parts. Only the first part is public.</p>
+        <figure class="format-figure"><div class="format-strip">
+          <div class="format-block format-public"><span class="block-number">01 · PUBLIC</span><strong>Header</strong><span>64 bytes</span></div>
+          <div class="format-block format-private"><span class="block-number">02 · ENCRYPTED</span><strong>File list</strong><span>Names and file details</span></div>
+          <div class="format-block format-private"><span class="block-number">03 · ENCRYPTED</span><strong>File contents</strong><span>Data blocks + check tags</span></div>
+        </div><figcaption>The header comes first. The encrypted file list and file contents follow. The diagram does not show actual sizes.</figcaption></figure>
+        <dl class="part-list"><div><dt>Header</dt><dd>The header identifies the format and version. It contains the settings that the browser needs to make the encryption key.</dd></div><div><dt>File list</dt><dd>This encrypted list contains original names, folder paths, file types, sizes, and times. The technical name for this list is the manifest.</dd></div><div><dt>File contents</dt><dd>The browser divides each file into data blocks. Each block contains up to 1 MiB (1,048,576 bytes) before encryption.</dd></div></dl>
+        <p>Each encrypted part has a 16-byte check tag. The browser uses this tag to detect changes.</p>
+        <p>The public filename starts as a random identifier with the .efs extension. You can change this filename before download.</p>
+      </section>
+
+      <section id="encryption"><h2>How does encryption work?</h2><p>The browser makes an encryption key from your password. A key is the secret value that an encryption algorithm uses.</p>
+        <figure class="key-figure"><div class="key-inputs"><span>Password</span><span>Random salt</span></div><div class="diagram-arrow" aria-hidden="true">↓</div><div class="key-process"><strong>PBKDF2-HMAC-SHA-256</strong><span>600,000 iterations</span></div><div class="diagram-arrow" aria-hidden="true">↓</div><div class="key-output"><strong>256-bit encryption key</strong><span>AES-256-GCM</span></div><figcaption>The salt is a public random value. It is different for each new vault.</figcaption></figure>
+        <p>PBKDF2 is a key derivation algorithm. An iteration is one repeated calculation.</p><p>The repeated calculations increase the work for each password guess. A salt prevents the reuse of the same password calculation across different vaults.</p>
+        <p>AES-256-GCM encrypts the file list and file contents. It also makes the check tags.</p><p>The browser uses a different record number for each encrypted part. This number helps prevent the reuse of encryption settings within a vault.</p>
+        <p>The browser uses its Web Crypto API for these operations. The app does not use its own replacement for these encryption algorithms.</p>
+      </section>
+
+      <section id="checks"><h2>What happens when you unlock a vault?</h2><ol class="guide-steps"><li>The browser uses your password and the public salt to make a key.</li><li>The browser tries to decrypt the file list and check its tag.</li><li>If the check succeeds, the browser shows the original names.</li><li>You select the files that you want to decrypt.</li><li>The browser checks all selected data blocks before it shows a complete file.</li></ol>
+        <p>If the file list check fails, the password can be incorrect. The file list can also have damage. The app cannot distinguish these two causes.</p><p>Unlocking the names does not check all file contents. The browser checks each selected file during decryption.</p>
+      </section>
+
+      <section id="protection"><h2>What protects your files?</h2><div class="protection-list"><div><h3>Encrypted names and contents</h3><p>The vault does not expose original names, file types, or folder paths without the correct key.</p></div><div><h3>Checks for changed data</h3><p>The checks include the public header and each record number. They help detect changes, missing data, and blocks in the wrong position.</p><p>These checks do not identify the person who made the vault.</p></div><div><h3>Separate keys for separate vaults</h3><p>Each new vault gets a new salt. The same password produces different keys for these vaults.</p></div><div><h3>Processing in your browser</h3><p>File encryption and decryption occur in your browser. The app does not send your encryption password to a server.</p></div></div></section>
+
+      <section id="limits"><h2>Know the limits</h2><ul class="limit-list"><li><strong>A weak password can be guessed.</strong> Someone with a vault can test passwords without this app. Use a long password that you do not use elsewhere.</li><li><strong>There is no password recovery.</strong> Keep your password in a safe place. The app cannot replace a lost password.</li><li><strong>Some information is public.</strong> The file size, format settings, and encrypted file list size are visible. These sizes can give information about the contents.</li><li><strong>Your filename is public.</strong> A name that you give the .efs file can reveal information.</li><li><strong>Your browser and device must be safe.</strong> Harmful software or changed app code can read your password or decrypted files.</li><li><strong>The source files remain unchanged.</strong> Encryption does not delete the source files. A password change does not change old vault copies.</li><li><strong>This version has no independent security review.</strong> Standard algorithms alone do not prove that an app is secure.</li></ul>
+        <p>The app has no fixed file-size limit. Your browser, free disk space, and file system can still limit file size.</p><p>The app processes file contents in blocks of up to 1 MiB. Progress shows the percentage of content bytes processed.</p>
+        <p>Password derivation and final disk writes take additional time. The percentage does not estimate the time that remains.</p>
+        <p>Supported browsers use temporary disk storage for encrypted output. Large decrypted batches can go directly to a folder that you choose.</p>
+        <p>Other browsers use Blob storage. Large operations can fail if the browser runs out of memory or storage.</p>
+        <p>The app clears its workspace when you close the tab. Files that you save to a chosen folder remain on disk.</p>
+        <p>Temporary encrypted files can remain after a crash. The app removes abandoned temporary files on a later visit.</p>
+        <p>Closing the tab does not erase downloaded files or guarantee removal from device memory.</p>
+      </section>
+
+      <section id="details"><h2>Technical details</h2><p>Each header contains a version number and an algorithm identifier. The reader rejects versions and settings that it does not support.</p><p>This check allows future formats to use different algorithms or layouts. A future format needs a reader that supports its version.</p><details class="technical-details"><summary>Show the version 1 settings</summary><div class="table-scroll"><table><caption>Version 1.0 · algorithm set 1</caption><tbody><tr><th scope="row">Key derivation</th><td>PBKDF2-HMAC-SHA-256, 600,000 iterations</td></tr><tr><th scope="row">Salt</th><td>16 random bytes per vault</td></tr><tr><th scope="row">Encryption</th><td>AES-GCM, 256-bit key</td></tr><tr><th scope="row">Check tag</th><td>128 bits (16 bytes) per record</td></tr><tr><th scope="row">Record IV</th><td>12 bytes: four zero bytes, then the 64-bit record number</td></tr><tr><th scope="row">Record numbers</th><td>0 for the file list, then 1 and above for data blocks</td></tr><tr><th scope="row">Additional authenticated data</th><td>The exact 64-byte header, then the 64-bit record number</td></tr><tr><th scope="row">Data block size</th><td>Up to 1,048,576 bytes before encryption</td></tr><tr><th scope="row">Empty file</th><td>One record with a check tag and no content bytes</td></tr><tr><th scope="row">Password text</th><td>UTF-8. Case and spaces stay unchanged.</td></tr><tr><th scope="row">Integer byte order</th><td>Big-endian</td></tr></tbody></table></div><p>An IV is an initialization vector. GCM requires a different IV for each record under the same key.</p><p>Additional authenticated data is data that a check tag protects without encryption.</p><p>The reader calculates the expected file size from the decrypted file list. It rejects missing or added bytes.</p><p>A password change creates a new vault with a new salt. The app does not change encrypted data in place.</p><a href="/efs/format-v1.md" class="spec-link">Read the full format specification (.md) ↗</a></details></section>
+
+      <section class="guide-references"><h2>References</h2><p>These documents describe the algorithms. They do not certify this app.</p><ul><li><a href="https://www.w3.org/TR/2017/REC-WebCryptoAPI-20170126/#aes-gcm" rel="noreferrer">W3C: Web Crypto API</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/38/d/final" rel="noreferrer">NIST: AES-GCM</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/132/final" rel="noreferrer">NIST: Password-based key derivation</a></li></ul></section>
+    </article>
+  </main>
+</body>
+</html>

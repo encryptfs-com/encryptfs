@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 250" fill="none">
+  <title>Encrypt on your device, then upload the vault</title>
+  <rect width="560" height="250" rx="20" fill="#20252f"/>
+  <rect x="20" y="20" width="354" height="210" rx="14" fill="#273345" stroke="#455975"/>
+  <rect x="386" y="20" width="154" height="210" rx="14" fill="#292d38" stroke="#414959"/>
+  <g fill="#bfcbe0" font-family="system-ui, sans-serif" font-size="18" font-weight="600">
+    <text x="38" y="52">Your device</text><text x="404" y="52">Cloud storage</text>
+  </g>
+  <g stroke="#9bbaff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M113 124h98m-8-8 8 8-8 8m93-8h123m-8-8 8 8-8 8"/>
+    <rect x="54" y="93" width="45" height="55" rx="5" fill="#34475f"/>
+    <path d="M63 134l10-12 7 6 8-9 5 6"/>
+    <circle cx="69" cy="108" r="4" fill="#9bbaff"/>
+    <rect x="234" y="111" width="43" height="38" rx="8" fill="#354d79"/>
+    <path d="M242 111v-9a13.5 13.5 0 0 1 27 0v9m-13.5 13v10"/>
+    <path d="M440 94h35l15 15v43h-50z" fill="#354d79"/>
+    <path d="M475 94v15h15"/>
+  </g>
+  <g fill="#e4ecfc" font-family="system-ui, sans-serif" font-size="19" text-anchor="middle">
+    <text x="77" y="184">Originals</text><text x="255" y="184">.efs vault</text><text x="465" y="184">.efs vault</text>
+  </g>
+  <g fill="#c3d0e9" font-family="system-ui, sans-serif" font-size="16" text-anchor="middle">
+    <text x="163" y="109">Encrypt</text><text x="357" y="109">Upload</text>
+    <text x="196" y="211">Keep your password separate.</text>
+  </g>
+</svg>

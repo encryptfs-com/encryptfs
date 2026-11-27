@@ -1,0 +1,19 @@
+{
+  "specVersion": "1.0",
+  "host": { "displayName": "encryptfs" },
+  "entries": [
+    {
+      "identifier": "urn:air:encryptfs:documentation:efs-format",
+      "displayName": "EFS format documentation",
+      "type": "application/json",
+      "description": "Read the file format and security limits. This resource does not provide an encryption API.",
+      "data": {
+        "kind": "documentation",
+        "guide": "/efs/",
+        "specification": "/efs/format-v1.md",
+        "workspace": "/",
+        "processing": "Encrypt, decrypt, and view files in your browser, all on-device."
+      }
+    }
+  ]
+}

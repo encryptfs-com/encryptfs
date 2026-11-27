@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Open an .efs vault and play a video with on-demand preview."><meta name="color-scheme" content="dark"><meta name="theme-color" content="#18191c"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>How to play a large encrypted video without saving a decrypted copy — encryptfs</title><meta property="og:title" content="How to play a large encrypted video without saving a decrypted copy"><meta property="og:description" content="Open an .efs vault and play a video with on-demand preview."><meta property="og:type" content="article"><meta property="article:published_time" content="2026-09-18T00:00:00Z"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/efs/guide.css"><link rel="stylesheet" href="/guides/guides.css"><link rel="describedby" href="/llms.txt" type="text/plain"><link rel="alternate" href="/guides/play-large-encrypted-video/index.md" type="text/markdown"></head>
+<body><header class="site-header"><a href="/" class="brand" aria-label="encryptfs home"><img class="brand-mark" src="/favicon.svg" width="30" height="30" alt="">encrypt<span class="brand-fs">fs</span></a><nav class="reading-nav" aria-label="Main navigation"><a href="/guides/">Guides</a><a href="/efs/">File format</a><a href="/" class="secondary-button">Open encryptfs</a></nav></header><main class="efs-main guides-main"><article class="guide-post"><a href="/guides/" class="back-link">← All guides</a><header class="guide-intro"><span class="guide-version">FILE PRIVACY GUIDE</span><h1>How to play a large encrypted video without saving a decrypted copy</h1><time datetime="2026-09-18">September 18, 2026</time></header><div class="post-body"><p>Use on-demand preview to play a video from an .efs vault. The vault is an encrypted file that contains one or more original files.</p>
+<h2 id="open-the-video">Open the video</h2>
+<ol>
+<li><a href="/">Open encryptfs</a>.</li>
+<li>Select <strong>Add files</strong>.</li>
+<li>Choose the .efs vault.</li>
+<li>Open the <strong>Decrypt</strong> tab if it is closed.</li>
+<li>Enter the vault password.</li>
+<li>Select <strong>Unlock filenames</strong>.</li>
+<li>Select the eye icon beside the video name.</li>
+</ol>
+<p>For one large video, select its checkbox. Then select <strong>Preview on demand</strong>.</p>
+<h2 id="play-the-video">Play the video</h2>
+<ol>
+<li>Select the play control in the preview.</li>
+<li>To move to a different point in the video, use the playback bar.</li>
+<li>To stop the preview, select <strong>Close preview</strong>.</li>
+</ol>
+<figure class="guide-diagram"><img src="/guides/diagrams/video-preview.svg" alt="The player requests part of the video. Encryptfs decrypts that part from the vault and sends the bytes to the player."></figure>
+<p>The player requests a byte range. A byte range is a part of the file at a specified position.</p>
+<p>Encryptfs checks the integrity of each encrypted chunk that contains the requested bytes. It then sends the requested bytes to the player.</p>
+<p>The app does not create a complete decrypted video file during playback. It processes the vault in your browser.</p>
+<h2 id="if-the-video-does-not-play">If the video does not play</h2>
+<p>On-demand preview is available for MOV, MP4, and WebM files. Your browser must also support the codec that the video uses.</p>
+<p>A codec is the method that encodes and decodes the video. Two files with the same extension can use different codecs.</p>
+<p>If playback fails, check the message in the preview dialog. If the browser cannot decode the video, try a browser that supports its codec.</p>
+<p>To make a vault from your own videos, see <a href="/guides/encrypt-photos-videos-google-drive-icloud/">how to encrypt photos and videos before upload</a>.</p>
+</div><footer class="post-footer"><a href="/" class="primary-button">Open encryptfs</a><a href="/efs/">Read about the .efs format</a></footer></article></main></body></html>
