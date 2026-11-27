@@ -42,10 +42,10 @@ The progress bar counts file bytes. Password checks and final disk writes take a
 
 If the browser cannot store the encrypted output, encryptfs may offer **Retry to a folder…**. Enter the password again. Then select **Retry to a folder…** and choose a folder with enough free space. Encryptfs saves only the .efs vaults there. Use those vaults in the upload steps.
 
-1. Find the output in **Export encrypted files**.
+1. Find the output in **Save encrypted files**.
 2. Check the source name beside each output filename.
 3. Use the random name or enter a new name.
-4. Select **Export** for each vault or **Export this group**.
+4. Select **Save .efs file** for each vault or **Save all files in this group**.
 5. Check that the vaults are in your browser downloads.
 
 A name such as `family-passports.efs` can reveal information. A random name gives less information about the contents.

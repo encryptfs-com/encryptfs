@@ -39,3 +39,106 @@
   font-size: 13px;
   line-height: 1.5;
 }
+
+/* Workspace controls follow the current file state. */
+.workspace-navigation {
+  padding-block: 14px;
+}
+.workspace-tabs button { font-size: 14px; }
+.workspace-tabs button[aria-selected="true"] {
+  background: #f3d690;
+  color: #34260d;
+}
+.workspace-tabs [aria-selected="true"] .count {
+  background: #e7c474;
+  color: #34260d;
+}
+#workspace[data-empty="true"] .add-local-button { display: none; }
+
+.drop-zone {
+  width: 100%;
+  min-height: 42px;
+  justify-content: flex-start;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  color: #c9d5ea;
+  font-size: 13px;
+  text-align: start;
+}
+.drop-zone .drop-icon { color: #a6c1ff; }
+.drop-copy { display: flex; flex-direction: column; gap: 10px; }
+.drop-copy strong { font-weight: 550; }
+#drop-description:empty { display: none; }
+
+#workspace[data-empty="true"] .drop-zone {
+  width: calc(100% - 40px);
+  min-height: 190px;
+  margin: 20px;
+  padding: 24px 16px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  border: 1px dashed #536686;
+  background: #242b38;
+  text-align: center;
+}
+#workspace[data-empty="true"] .drop-zone:is(:hover, .dragging) {
+  border-color: #9bbaff;
+  background: #2c3951;
+}
+#workspace[data-empty="true"] .drop-icon {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  border: 1px solid #50668e;
+  border-radius: 50%;
+  font-size: 21px;
+  line-height: 1;
+}
+#workspace[data-empty="true"] .drop-copy strong {
+  font-size: clamp(17px, 3vw, 22px);
+  color: #f1f5ff;
+}
+#drop-description {
+  align-self: center;
+  padding: 6px 13px;
+  border-radius: 999px;
+  background: #3a59a0;
+  color: white;
+  font-weight: 600;
+}
+.drop-zone.dragging { background: var(--selection); }
+
+#workspace .pane-heading h2 { font-size: 17px; }
+#workspace .pane-heading p, #workspace .pane-actionbar p { color: #c1c7d3; font-size: 13px; }
+#workspace .file-name, #workspace .encrypt-controls input, #workspace .unlock-controls input { font-size: 14px; }
+#encrypt-password, #confirm-password, #unlock-password { border-radius: 6px; }
+#workspace .file-size, #workspace .badge, #workspace .column-headings { font-size: 12px; }
+#workspace .badge:not(.error, .ready, .decrypted) { color: #bec5d2; }
+#workspace .encrypt-controls label, #workspace .unlock-controls label, #workspace .results-search > label { font-size: 13px; }
+#workspace .file-list { min-height: 0; }
+#workspace .file-row { border-bottom-color: #34373f; }
+#workspace .file-list > .file-row:last-child { border-bottom: 0; }
+#workspace .export-entry .export-file-button { flex: none; }
+#workspace .export-file-button { font-size: 13px; }
+#workspace .output-source { font-size: 13px; color: #d1d8e6; }
+#workspace .export-caption { font-size: 12px; color: #c1c7d3; }
+.play-file-button { min-height: 31px; padding: 4px 10px; font-size: 12px; }
+
+@media (max-width: 700px) {
+  #workspace[data-empty="true"] .drop-zone { width: calc(100% - 28px); margin: 14px; min-height: 164px; }
+  #workspace .export-entry { flex-wrap: wrap; gap: 9px; }
+  #workspace .export-entry > div { flex-basis: calc(100% - 36px); }
+  #workspace .export-file-button { margin-inline-start: 28px; }
+  #workspace .file-duration { font-size: 11px; }
+  #about-dialog .file-flow { flex-wrap: wrap; }
+}
+
+#encrypted-output-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #b9d0ff;
+  font-size: 13px;
+  text-underline-offset: 3px;
+}

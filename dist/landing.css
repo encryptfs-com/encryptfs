@@ -20,7 +20,7 @@
   color: #f4f6fc;
   font-size: clamp(44px, 5.5vw, 78px);
   font-weight: 730;
-  letter-spacing: -.065em;
+  letter-spacing: -.045em;
   line-height: .98;
 }
 
@@ -152,7 +152,7 @@
   .landing h1 { font-size: clamp(38px, 9vw, 55px); }
   .landing-copy p { margin-block: 15px; }
   .landing-features { margin-top: 16px; row-gap: 7px; }
-  .landing-visual { min-height: 138px; overflow: hidden; border-top: 1px solid #353c4b; }
+  .landing-visual { min-height: 106px; overflow: hidden; border-top: 1px solid #353c4b; }
   .landing-orbit-outer { width: 224px; }
   .landing-orbit-inner { width: 146px; }
   .landing-vault { padding: 11px 17px 8px; border-radius: 16px; font-size: 13px; }

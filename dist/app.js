@@ -180,10 +180,17 @@ function setActiveTab(tab, focus = false) {
   flow.dataset.mode = tab;
   $('file-flow').setAttribute('aria-label', tab === 'encrypt' ? 'Encrypt photos, videos, and documents into .efs vaults' : 'Unlock and decrypt .efs vaults into photos, videos, and documents');
   $('flow-action').textContent = tab === 'encrypt' ? 'Encrypt with a password' : 'Unlock, then decrypt';
-  $('drop-description').textContent = tab === 'encrypt' ? 'Drop files to encrypt, or click to browse.' : 'Drop .efs files to decrypt, or click to browse.';
+  const empty = tab === 'encrypt'
+    ? !filesFor('plain').length && !state.groups.length
+    : !state.encrypted.length && !filesFor('results').length;
+  $('workspace').dataset.empty = String(empty);
+  $('drop-title').textContent = tab === 'encrypt'
+    ? (empty ? 'Drop files to encrypt' : 'Drop more files')
+    : (empty ? 'Drop .efs files to decrypt' : 'Drop more .efs files');
+  $('drop-description').textContent = empty ? 'Browse files' : '';
   if (focus) $(`${tab}-tab`).focus();
 }
-function selectableRow({ key, name, size, badge, decrypted = false, area, preview, extract, download, remove, type, duration, disabled = false }) {
+function selectableRow({ key, name, size, badge, decrypted = false, area, preview, play = false, extract, download, remove, type, duration, disabled = false }) {
   const selection = selectionFor(area);
   const row = element('div', `file-row${selection.has(key) ? ' selected' : ''}`);
   row.dataset.key = key; row.setAttribute('role', 'group'); row.dataset.selected = String(selection.has(key)); row.setAttribute('aria-label', `${name}, ${badge}, ${formatSize(size)}`); row.setAttribute('aria-disabled', String(disabled)); row.tabIndex = disabled ? -1 : 0;
@@ -201,7 +208,13 @@ function selectableRow({ key, name, size, badge, decrypted = false, area, previe
   status.append(element('span', `badge ${decrypted ? 'decrypted' : area === 'encrypted' ? 'ready' : ''}`, badge));
   row.append(nameCell, status, element('span', 'file-size', formatSize(size)));
   const actions = element('div', 'row-actions');
-  if (preview) actions.append(iconButton('eye', `Preview ${name}`, preview));
+  if (preview && play) {
+    const button = element('button', 'secondary-button play-file-button', 'Play');
+    button.type = 'button';
+    button.setAttribute('aria-label', `Play ${name}`);
+    button.onclick = event => { event.stopPropagation(); preview(); };
+    actions.append(button);
+  } else if (preview) actions.append(iconButton('eye', `Preview ${name}`, preview));
   if (extract) actions.append(iconButton('extract', `Extract ZIP ${name}`, extract));
   if (download) actions.append(iconButton('download', `Download ${name}`, download));
   if (remove) actions.append(iconButton('remove', `Remove ${name}`, remove));
@@ -278,7 +291,7 @@ function renderPlain(area = 'plain') {
     return selectableRow({ key: file.id, name, size: file.blob.size,
       badge: file.origin === 'decrypted' ? 'Decrypted' : zip ? 'ZIP archive' : 'Imported',
       decrypted: file.origin === 'decrypted', area, type: file.type, duration: file.duration,
-      preview: zip ? undefined : () => previewFile(file), extract: zip ? () => extractArchive(file, area) : undefined,
+      preview: zip ? undefined : () => previewFile(file), play: area === 'results' && Boolean(videoType(file)), extract: zip ? () => extractArchive(file, area) : undefined,
       download: () => downloads.write({ blob: file.blob, name }), remove: () => removePlain(file.id) });
   };
   const groups = new Map();
@@ -313,7 +326,7 @@ function renderEncrypted() {
       const row = item => {
         const type = item.size && videoType(item);
         return selectableRow({ key: fileKey(file, item.index), name: basename(item.path), size: item.size, badge: 'Ready to decrypt', area: 'encrypted', type: type || item.type,
-          preview: type ? () => previewUnlockedVideo(file, item, type) : undefined });
+          preview: type ? () => previewUnlockedVideo(file, item, type) : undefined, play: Boolean(type) });
       };
       if (file.manifest.kind === 'file') {
         const wrapper = element('div'); const line = row(available[0]);
@@ -348,10 +361,11 @@ async function exportFiles(group, files) {
 }
 function renderExports() {
   const list = $('export-list'); list.replaceChildren(); $('export-section').hidden = !state.groups.length;
+  $('export-instructions').hidden = !state.groups.some(group => !group.savedTo);
   for (const group of [...state.groups].reverse()) {
     const box = element('section', 'export-group');
     const heading = element('div', 'export-group-header');
-    const status = group.savedTo ? `saved in ${group.savedTo}` : 'ready to export';
+    const status = group.savedTo ? `saved in ${group.savedTo}` : 'ready to save';
     heading.append(element('strong', '', `Encryption ${group.number} · ${group.files.length} ${group.files.length === 1 ? 'file' : 'files'} ${status}`));
     heading.append(iconButton('remove', `Remove export group ${group.number}`, () => {
       if (state.busy) return;
@@ -369,7 +383,7 @@ function renderExports() {
         entry.append(info); box.append(entry);
         continue;
       }
-      const input = element('input'); input.value = file.name; input.setAttribute('aria-label', `Export filename ${file.id}`); input.disabled = state.busy;
+      const input = element('input'); input.value = file.name; input.setAttribute('aria-label', `Filename for encrypted copy of ${file.sourceName}`); input.disabled = state.busy;
       input.onchange = () => {
         let name = input.value;
         if (!name.toLowerCase().endsWith('.efs')) name += '.efs';
@@ -377,15 +391,15 @@ function renderExports() {
         file.name = name; input.value = name;
       };
       info.append(source, input, size);
-      const button = element('button', 'secondary-button export-file-button', 'Export ↓'); button.type = 'button'; button.disabled = state.busy;
-      button.setAttribute('aria-label', `Export encrypted file ${file.id}`); button.onclick = () => exportFiles(group, [file]);
+      const button = element('button', 'primary-button export-file-button', 'Save .efs file'); button.type = 'button'; button.disabled = state.busy;
+      button.setAttribute('aria-label', `Save encrypted file from ${file.sourceName}`); button.onclick = () => exportFiles(group, [file]);
       entry.append(info, button); box.append(entry);
     }
     if (!group.savedTo && group.files.length > 1) {
-      const button = element('button', 'secondary-button', 'Export this group ↓'); button.disabled = state.busy;
+      const button = element('button', 'secondary-button', 'Save all files in this group'); button.disabled = state.busy;
       button.onclick = () => exportFiles(group, [...group.files]); box.append(button);
     }
-    if (!group.savedTo) box.append(element('p', 'export-caption', 'Exported files leave this workspace. Keep your password — there’s no recovery.'));
+    if (!group.savedTo) box.append(element('p', 'export-caption', 'Check your browser downloads after saving. Keep your password. There is no password recovery.'));
     list.append(box);
   }
 }
@@ -394,15 +408,28 @@ function updateControls() {
   const ready = allKeys('encrypted');
   $('plain-count').textContent = filesFor('plain').length; $('results-count').textContent = filesFor('results').length; $('encrypted-count').textContent = state.encrypted.length;
   $('export-count').textContent = state.groups.reduce((sum, g) => sum + g.files.length, 0);
+  const outputCount = Number($('export-count').textContent);
+  const outputLink = $('encrypted-output-link');
+  outputLink.hidden = !outputCount;
+  outputLink.textContent = `Go to encrypted files (${outputCount}) ↓`;
   $('plain-size').textContent = formatSize(filesFor('plain').reduce((sum, f) => sum + f.blob.size, 0));
   const totalUnlocked = state.encrypted.reduce((sum, file) => sum + unlockedEntries(file).length, 0);
   const lockedCount = state.encrypted.filter(file => !file.manifest).length;
+  $('plain-pane').hidden = !filesFor('plain').length;
+  $('encrypted-pane').hidden = !state.encrypted.length;
+  $('encrypted-search-tools').hidden = !totalUnlocked;
+  $('encrypted-select-all').hidden = !totalUnlocked;
+  $('decrypt-actions').hidden = !totalUnlocked;
+  $('encrypted-instructions').textContent = lockedCount
+    ? 'Enter the vault password to reveal the original filenames.'
+    : 'Play a supported video or select files to decrypt.';
   $('ready-count').textContent = `${totalUnlocked} unlocked · ${lockedCount} locked`;
   $('clear-encrypted-search').hidden = !state.encryptedQuery;
   $('encrypted-search-summary').textContent = state.encryptedQuery.trim() ? `${ready.length} of ${totalUnlocked} unlocked files · locked names cannot be searched` : '';
   $('sort-encrypted').textContent = state.descending ? 'Name ↓' : 'Name ↑';
   $('sort-encrypted').setAttribute('aria-label', `Sort unlocked filenames ${state.descending ? 'ascending' : 'descending'}`);
   const resultTotal = filesFor('results').length;
+  $('results-pane').hidden = !resultTotal;
   $('results-search-summary').textContent = state.resultsQuery.trim() ? `${filterResults(filesFor('results'), state.resultsQuery).length} of ${resultTotal} files` : '';
   $('clear-results-search').hidden = !state.resultsQuery;
   for (const area of ['plain', 'encrypted', 'results']) {
@@ -419,7 +446,7 @@ function updateControls() {
   const onDemand = selectedOnDemandVideo();
   $('decrypt-button').textContent = onDemand ? 'Preview on demand' : `Decrypt selected${state.encryptedSelection.size ? ` (${state.encryptedSelection.size})` : ''} ↓`;
   $('unlock-button').disabled = busy || !state.encrypted.some(file => !file.manifest);
-  $('unlock-form').hidden = !state.encrypted.length;
+  $('unlock-form').hidden = !lockedCount;
   $('decrypt-selection-summary').textContent = onDemand ? '1 selected · Decrypt during playback' :
     state.encryptedSelection.size ? `${state.encryptedSelection.size} selected · Decrypt to view below` : 'Select unlocked files to decrypt.';
   const selectedResults = filesFor('results').filter(file => state.resultsSelection.has(file.id));
@@ -440,7 +467,8 @@ function updateControls() {
   $('import-drive').setAttribute('aria-label', driveLabel); $('import-drive').title = driveLabel;
   $('disconnect-drive').hidden = !drive.connected;
   $('drop-zone').setAttribute('aria-disabled', String(busy));
-  $('encrypt-tab-count').textContent = filesFor('plain').length + Number($('export-count').textContent);
+  $('drop-zone').disabled = busy;
+  $('encrypt-tab-count').textContent = filesFor('plain').length;
   $('decrypt-tab-count').textContent = state.encrypted.length + resultTotal;
   $('decrypt-tab-count').title = `${state.encrypted.length} encrypted containers · ${resultTotal} decrypted files`;
   $('encrypt-tab-count').title = `${filesFor('plain').length} input files · ${$('export-count').textContent} encrypted outputs`;
@@ -619,7 +647,7 @@ async function encryptSelected(event) {
     const summary = output && group.files.length
       ? `Saved ${group.files.length} encrypted ${group.files.length === 1 ? 'file' : 'files'} in ${group.savedTo}.`
       : group.files.length
-      ? `${group.files.length} encrypted ${group.files.length === 1 ? 'file is' : 'files are'} ready to rename and download.`
+      ? `${group.files.length} encrypted ${group.files.length === 1 ? 'file is' : 'files are'} ready to save.`
       : 'Encryption failed.';
     message(`${summary}${errors.length ? ` ${errors.length} failed: ${errors.slice(0, 3).join(' ')}` : ''}`, errors.length > 0);
     produced = group.files.length > 0;
@@ -848,7 +876,6 @@ else {
   $('encrypt-password').oninput = () => $('confirm-password').setCustomValidity('');
   $('file-input').onchange = event => { intake(event.target.files); event.target.value = ''; };
   $('drop-zone').onclick = () => { if (!state.busy) $('file-input').click(); };
-  $('drop-zone').onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); if (!state.busy) $('file-input').click(); } };
   $('drop-zone').ondragover = event => { event.preventDefault(); if (!state.busy) $('drop-zone').classList.add('dragging'); };
   $('drop-zone').ondragleave = () => $('drop-zone').classList.remove('dragging');
   $('drop-zone').ondrop = event => { event.preventDefault(); $('drop-zone').classList.remove('dragging'); intake(event.dataTransfer.files); };

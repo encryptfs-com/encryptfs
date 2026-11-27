@@ -10,7 +10,7 @@ Use on-demand preview to play a video from an .efs vault. The vault is an encryp
 4. Open the **Decrypt** tab if it is closed.
 5. Enter the vault password.
 6. Select **Unlock filenames**.
-7. Select the eye icon beside the video name.
+7. Select **Play** beside the video name.
 
 For one large video, select its checkbox. Then select **Preview on demand**.
 
